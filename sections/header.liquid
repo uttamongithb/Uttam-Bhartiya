@@ -1,10 +1,10 @@
 
 
 {% liquid
-  assign order = 'logo,localization,search,drawer_search,actions'
+  assign order = 'localization,drawer_search'
 
   if shop.customer_accounts_enabled
-    assign order = 'drawer_search,logo,localization,search,actions'
+    assign order = 'drawer_search,localization'
   endif
 
   assign rows = 'top,bottom' | split: ','
@@ -71,23 +71,23 @@
   if section.settings.localization_position == 'left'
     if section.settings.search_position == 'left'
       if shop.customer_accounts_enabled
-        assign order = 'drawer_search,logo,search,localization,actions'
+        assign order = 'drawer_search,localization'
       else
-        assign order = 'logo,search,localization,drawer_search,actions'
+        assign order = 'localization,drawer_search'
       endif
     else
       if shop.customer_accounts_enabled
-        assign order = 'drawer_search,logo,localization,search,actions'
+        assign order = 'drawer_search,localization,search'
       else
-        assign order = 'logo,localization,search,drawer_search,actions'
+        assign order = 'localization,search,drawer_search'
       endif
     endif
   else
     if section.settings.search_position == 'left'
       if shop.customer_accounts_enabled
-        assign order = 'drawer_search,logo,search,localization,actions'
+        assign order = 'drawer_search,search,localization'
       else
-        assign order = 'logo,search,localization,drawer_search,actions'
+        assign order = 'search,localization,drawer_search'
       endif
     endif
   endif
