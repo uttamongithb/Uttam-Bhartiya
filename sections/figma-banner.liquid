@@ -23,6 +23,12 @@
   {%- endif -%}
 
   <div class="figma-banner__content">
+    {%- if section.settings.background_image != blank -%}
+      <div class="figma-banner__media figma-banner__media--top">
+        {{ section.settings.background_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'figma-banner__image', alt: section.settings.heading }}
+      </div>
+    {%- endif -%}
+
     <div class="figma-banner__text">
       {%- if section.settings.heading != blank -%}
         <h1 class="figma-banner__heading">{{ section.settings.heading }}</h1>
@@ -38,8 +44,8 @@
     </div>
 
     {%- if section.settings.background_image != blank -%}
-      <div class="figma-banner__media">
-        {{ section.settings.background_image | image_url: width: 800 | image_tag: loading: 'lazy', class: 'figma-banner__image', alt: section.settings.heading }}
+      <div class="figma-banner__media figma-banner__media--bottom">
+        {{ section.settings.background_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'figma-banner__image', alt: section.settings.heading }}
       </div>
     {%- endif -%}
   </div>
