@@ -1,5 +1,6 @@
 .figma-banner {
   padding: 0;
+  margin: 0;
   background: #fff;
 }
 
@@ -8,12 +9,12 @@
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 24px;
-  margin-bottom: 48px;
+  height: 64px;
   font-size: 18px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   background: #f5f5f5;
-  padding: 16px 80px;
+  padding: 0 80px;
 }
 
 .figma-banner__brand {
@@ -34,7 +35,7 @@
   padding: 10px 20px;
   background: #fff544;
   color: #000;
-  border: 1px solid #000;
+  border: none;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -83,7 +84,15 @@
 
 .figma-banner__media--top {
   width: 100%;
+  height: 390px;
   margin-bottom: 40px;
+  overflow: hidden;
+}
+
+.figma-banner__media--top .figma-banner__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .figma-banner__media--right {
