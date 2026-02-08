@@ -15,9 +15,12 @@
         "brand_text": "TISSO VISION",
         "tagline_text": "Find the ideal gift for your loved one.",
         "top_button_label": "CHOOSE GIFT",
+        "top_button_link": "",
         "heading": "The Gift Guide",
         "description": "Discover joy: your ultimate holiday gift destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.",
-        "cta_label": "SHOP NOW"
+        "cta_label": "SHOP NOW",
+        "cta_link": "",
+        "background_image": "shopify://shop_images/Frame.svg"
       }
     },
     "figma_grid": {
