@@ -1,7 +1,7 @@
 /* Remove top spacing */
 body {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .content-for-layout {
@@ -12,6 +12,10 @@ body {
 .shopify-section {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
+}
+
+.shopify-section:first-child {
+  margin-top: 0 !important;
 }
 
 .figma-banner {
@@ -92,7 +96,7 @@ body {
   position: relative;
   display: flex;
   align-items: flex-start;
-  gap: 16px;
+  gap: 8px;
   width: 100%;
   height: 390px;
   overflow: hidden;
@@ -149,6 +153,7 @@ body {
   font-weight: 400;
   line-height: 1.1;
   margin: 0 0 24px;
+  padding-top: 32px;
   font-family: 'Times New Roman', serif;
 }
 
