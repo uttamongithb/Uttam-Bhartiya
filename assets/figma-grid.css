@@ -1,0 +1,269 @@
+.figma-grid {
+  padding: 32px 24px;
+  background: #fff;
+}
+
+.figma-grid__title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 24px;
+  letter-spacing: -0.01em;
+}
+
+.figma-grid__items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.figma-grid__card {
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  aspect-ratio: 1;
+  transition: transform 0.2s ease;
+}
+
+.figma-grid__card:hover {
+  transform: scale(1.02);
+}
+
+.figma-grid__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Modal */
+.figma-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 16px;
+}
+
+.figma-modal.is-active {
+  display: flex;
+}
+
+.figma-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+.figma-modal__dialog {
+  position: relative;
+  background: #fff;
+  width: 100%;
+  max-width: 720px;
+  padding: 24px;
+  border-radius: 0;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.figma-modal__close {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.figma-modal__close:hover {
+  border-color: #111;
+}
+
+.figma-modal__content {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 16px;
+}
+
+.figma-modal__media {
+  background: #f5f5f5;
+}
+
+.figma-modal__image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.figma-modal__title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.figma-modal__price {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 8px;
+}
+
+.figma-modal__description {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.figma-modal__options {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.figma-modal__options > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.figma-modal__options label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #111;
+}
+
+.figma-modal__options select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  background: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.figma-modal__options select:focus {
+  outline: none;
+  border-color: #111;
+}
+
+.figma-modal__add {
+  width: 100%;
+  padding: 12px;
+  background: #111;
+  color: #fff;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.figma-modal__add:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.figma-modal__add:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.figma-modal__status {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #2d7a3b;
+  min-height: 18px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .figma-grid {
+    padding: 24px 16px;
+  }
+
+  .figma-grid__items {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .figma-modal__content {
+    grid-template-columns: 1fr;
+  }
+
+  .figma-modal__image {
+    height: 200px;
+  }
+
+  .figma-modal__dialog {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .figma-grid {
+    padding: 16px;
+  }
+
+  .figma-grid__title {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .figma-grid__items {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .figma-modal {
+    padding: 12px;
+  }
+
+  .figma-modal__dialog {
+    padding: 16px;
+  }
+
+  .figma-modal__image {
+    height: 160px;
+  }
+
+  .figma-modal__title {
+    font-size: 16px;
+  }
+
+  .figma-modal__close {
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+  }
+}

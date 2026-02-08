@@ -1,0 +1,107 @@
+{% comment %}
+  Figma Product Grid Section - Custom built from scratch
+  - 6 product blocks with customizable product selection
+  - Vanilla JS popup with product details and add-to-cart
+  - Dynamic variant rendering
+  - Bundle logic: Black + Medium = auto-add "Soft Winter Jacket"
+{% endcomment %}
+
+{{ 'figma-grid.css' | asset_url | stylesheet_tag }}
+{{ 'figma-grid.js' | asset_url | script_tag }}
+
+<section class="figma-grid" data-figma-grid data-bundle-handle="{{ section.settings.bundle_product_handle }}">
+  {%- if section.settings.title != blank -%}
+    <h2 class="figma-grid__title">{{ section.settings.title }}</h2>
+  {%- endif -%}
+
+  <div class="figma-grid__items">
+    {%- for block in section.blocks -%}
+      {%- assign product = all_products[block.settings.product] -%}
+      {%- if product != blank -%}
+        <button
+          class="figma-grid__card"
+          type="button"
+          data-product-handle="{{ product.handle }}"
+          aria-label="View {{ product.title }}"
+          {{ block.shopify_attributes }}
+        >
+          {%- if product.featured_image -%}
+            {{ product.featured_image | image_url: width: 400 | image_tag: loading: 'lazy', class: 'figma-grid__image', alt: product.title }}
+          {%- endif -%}
+        </button>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{%- comment -%}
+  Modal for product details and add-to-cart
+  Rendered once for reuse across all products
+{%- endcomment -%}
+<div class="figma-modal" data-figma-modal aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="figma-modal__overlay" data-figma-overlay></div>
+  <div class="figma-modal__dialog">
+    <button class="figma-modal__close" type="button" aria-label="Close" data-figma-close>×</button>
+    <div class="figma-modal__content">
+      <div class="figma-modal__media">
+        <img class="figma-modal__image" data-figma-image alt="" loading="lazy">
+      </div>
+      <div class="figma-modal__details">
+        <h3 class="figma-modal__title" data-figma-title></h3>
+        <div class="figma-modal__price" data-figma-price></div>
+        <div class="figma-modal__description" data-figma-desc></div>
+        <div class="figma-modal__options" data-figma-options></div>
+        <button class="figma-modal__add" type="button" data-figma-add>ADD TO CART</button>
+        <div class="figma-modal__status" role="status" aria-live="polite" data-figma-status></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Figma Product Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Tisso vision in the wild"
+    },
+    {
+      "type": "text",
+      "id": "bundle_product_handle",
+      "label": "Bundle product handle (auto-added with Black + Medium)",
+      "default": "soft-winter-jacket",
+      "info": "Product handle must exist in store"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select product"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Figma Product Grid",
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}

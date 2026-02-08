@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "banner": {
+      "type": "figma-banner",
+      "settings": {}
+    },
+    "grid": {
+      "type": "figma-grid",
+      "settings": {}
+    }
+  },
+  "order": [
+    "banner",
+    "grid"
+  ]
+}
