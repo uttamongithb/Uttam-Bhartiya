@@ -51,6 +51,12 @@
       {%- endif -%}
     </div>
   </div>
+
+  {%- if section.settings.bottom_text != blank -%}
+    <div class="figma-banner__bottom-bar">
+      {{ section.settings.bottom_text }}
+    </div>
+  {%- endif -%}
 </section>
 
 {% schema %}
@@ -107,6 +113,12 @@
       "type": "image_picker",
       "id": "background_image",
       "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "bottom_text",
+      "label": "Bottom announcement text",
+      "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
     }
   ],
   "presets": [
