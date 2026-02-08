@@ -6,12 +6,6 @@
 {{ 'figma-banner.css' | asset_url | stylesheet_tag }}
 
 <section class="figma-banner">
-  {%- if section.settings.background_image != blank -%}
-    <div class="figma-banner__header-image">
-      {{ section.settings.background_image | image_url: width: 1600 | image_tag: loading: 'eager', class: 'figma-banner__header-img', alt: 'Header decoration' }}
-    </div>
-  {%- endif -%}
-
   {%- if section.settings.brand_text != blank or section.settings.tagline_text != blank -%}
     <div class="figma-banner__top">
       {%- if section.settings.brand_text != blank -%}
