@@ -127,7 +127,7 @@ body {
 
 .figma-banner__media--right {
   position: absolute;
-  right: -200px;
+  right: 50px;
   top: 0;
   width: 890px;
   height: 402px;
