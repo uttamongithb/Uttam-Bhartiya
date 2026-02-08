@@ -23,9 +23,9 @@
   {%- endif -%}
 
   <div class="figma-banner__content">
-    {%- if section.settings.background_image != blank -%}
+    {%- if section.settings.top_image != blank -%}
       <div class="figma-banner__media figma-banner__media--top">
-        {{ section.settings.background_image | image_url: width: 1400 | image_tag: loading: 'lazy', class: 'figma-banner__image', alt: section.settings.heading }}
+        {{ section.settings.top_image | image_url: width: 1440 | image_tag: loading: 'lazy', class: 'figma-banner__image', alt: section.settings.heading }}
       </div>
     {%- endif -%}
 
@@ -44,9 +44,9 @@
         {%- endif -%}
       </div>
 
-      {%- if section.settings.background_image != blank -%}
+      {%- if section.settings.right_image != blank -%}
         <div class="figma-banner__media figma-banner__media--right">
-          {{ section.settings.background_image | image_url: width: 1000 | image_tag: loading: 'lazy', class: 'figma-banner__image', alt: section.settings.heading }}
+          {{ section.settings.right_image | image_url: width: 890 | image_tag: loading: 'lazy', class: 'figma-banner__image', alt: section.settings.heading }}
         </div>
       {%- endif -%}
     </div>
@@ -111,8 +111,13 @@
     },
     {
       "type": "image_picker",
-      "id": "background_image",
-      "label": "Background image"
+      "id": "top_image",
+      "label": "Top full-width image"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image",
+      "label": "Right side image"
     },
     {
       "type": "text",
