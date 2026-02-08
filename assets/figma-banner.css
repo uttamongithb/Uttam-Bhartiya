@@ -1,5 +1,5 @@
 .figma-banner {
-  padding: 40px 80px;
+  padding: 16px 80px 40px;
   background: #fff;
 }
 
@@ -139,7 +139,7 @@
 
 @media (max-width: 1200px) {
   .figma-banner {
-    padding: 32px 40px;
+    padding: 16px 40px 32px;
   }
 
   .figma-banner__content {
@@ -157,7 +157,7 @@
 
 @media (max-width: 768px) {
   .figma-banner {
-    padding: 24px 16px;
+    padding: 12px 16px 24px;
   }
 
   .figma-banner__top {
@@ -199,7 +199,7 @@
 
 @media (max-width: 480px) {
   .figma-banner {
-    padding: 20px 12px;
+    padding: 10px 12px 20px;
   }
 
   .figma-banner__heading {
