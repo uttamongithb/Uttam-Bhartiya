@@ -2,11 +2,69 @@
   "sections": {
     "banner": {
       "type": "figma-banner",
-      "settings": {}
+      "settings": {
+        "brand_text": "TISSO VISION",
+        "tagline_text": "Find the ideal gift for your loved one.",
+        "top_button_label": "CHOOSE GIFT",
+        "top_button_link": "",
+        "heading": "The Gift Guide",
+        "description": "Discover joy: your ultimate holiday gift destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.",
+        "cta_label": "SHOP NOW",
+        "cta_link": ""
+      }
     },
     "grid": {
       "type": "figma-grid",
-      "settings": {}
+      "blocks": {
+        "product_1": {
+          "type": "product",
+          "settings": {
+            "product": "black-leather-bag"
+          }
+        },
+        "product_2": {
+          "type": "product",
+          "settings": {
+            "product": "blue-silk-tuxedo"
+          }
+        },
+        "product_3": {
+          "type": "product",
+          "settings": {
+            "product": "chequered-red-shirt"
+          }
+        },
+        "product_4": {
+          "type": "product",
+          "settings": {
+            "product": "classic-leather-jacket"
+          }
+        },
+        "product_5": {
+          "type": "product",
+          "settings": {
+            "product": "classic-varsity-top"
+          }
+        },
+        "product_6": {
+          "type": "product",
+          "settings": {
+            "product": "dark-denim-top"
+          }
+        }
+      },
+      "block_order": [
+        "product_1",
+        "product_2",
+        "product_3",
+        "product_4",
+        "product_5",
+        "product_6"
+      ],
+      "settings": {
+        "title": "Tisso vision in the wild",
+        "bundle_product_handle": "soft-winter-jacket"
+      }
     }
   },
   "order": [
