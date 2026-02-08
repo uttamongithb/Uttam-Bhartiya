@@ -25,29 +25,31 @@
   <div class="figma-banner__content">
     {%- if section.settings.background_image != blank -%}
       <div class="figma-banner__media figma-banner__media--top">
-        {{ section.settings.background_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'figma-banner__image', alt: section.settings.heading }}
+        {{ section.settings.background_image | image_url: width: 1400 | image_tag: loading: 'lazy', class: 'figma-banner__image', alt: section.settings.heading }}
       </div>
     {%- endif -%}
 
-    <div class="figma-banner__text">
-      {%- if section.settings.heading != blank -%}
-        <h1 class="figma-banner__heading">{{ section.settings.heading }}</h1>
-      {%- endif -%}
-      {%- if section.settings.description != blank -%}
-        <p class="figma-banner__description">{{ section.settings.description }}</p>
-      {%- endif -%}
-      {%- if section.settings.cta_label != blank -%}
-        <a class="figma-banner__cta" href="{{ section.settings.cta_link }}">
-          {{- section.settings.cta_label -}}
-        </a>
+    <div class="figma-banner__bottom-section">
+      <div class="figma-banner__text">
+        {%- if section.settings.heading != blank -%}
+          <h1 class="figma-banner__heading">{{ section.settings.heading }}</h1>
+        {%- endif -%}
+        {%- if section.settings.description != blank -%}
+          <p class="figma-banner__description">{{ section.settings.description }}</p>
+        {%- endif -%}
+        {%- if section.settings.cta_label != blank -%}
+          <a class="figma-banner__cta" href="{{ section.settings.cta_link }}">
+            {{- section.settings.cta_label -}}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.background_image != blank -%}
+        <div class="figma-banner__media figma-banner__media--right">
+          {{ section.settings.background_image | image_url: width: 1000 | image_tag: loading: 'lazy', class: 'figma-banner__image', alt: section.settings.heading }}
+        </div>
       {%- endif -%}
     </div>
-
-    {%- if section.settings.background_image != blank -%}
-      <div class="figma-banner__media figma-banner__media--bottom">
-        {{ section.settings.background_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'figma-banner__image', alt: section.settings.heading }}
-      </div>
-    {%- endif -%}
   </div>
 </section>
 
