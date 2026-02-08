@@ -117,12 +117,12 @@ body {
 
 .figma-banner__media--right {
   position: absolute;
-  right: 0;
+  right: -80px;
   top: 0;
   width: 890px;
   height: 402px;
   z-index: 1;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .figma-banner__media--right .figma-banner__image {
