@@ -9,13 +9,11 @@
   align-items: center;
   gap: 24px;
   margin-bottom: 48px;
-  font-size: 11px;
+  font-size: 18px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  max-width: 1440px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 16px 80px 0;
+  background: #f5f5f5;
+  padding: 16px 80px;
 }
 
 .figma-banner__brand {
@@ -32,8 +30,9 @@
 .figma-banner__top-btn {
   display: inline-flex;
   align-items: center;
+  gap: 8px;
   padding: 10px 20px;
-  background: #d4af6a;
+  background: #fff544;
   color: #000;
   border: 1px solid #000;
   font-size: 11px;
@@ -43,6 +42,12 @@
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   justify-self: end;
+}
+
+.figma-banner__top-btn::after {
+  content: '→';
+  font-size: 16px;
+  display: inline-block;
 }
 
 .figma-banner__top-btn:hover {
@@ -149,7 +154,7 @@
 
 @media (max-width: 1200px) {
   .figma-banner__top {
-    padding: 16px 40px 0;
+    padding: 16px 40px;
   }
 
   .figma-banner__content {
@@ -168,7 +173,7 @@
 
 @media (max-width: 768px) {
   .figma-banner__top {
-    padding: 12px 16px 0;
+    padding: 12px 16px;
   }
 
   .figma-banner__content {
@@ -216,7 +221,7 @@
 
 @media (max-width: 480px) {
   .figma-banner__top {
-    padding: 10px 12px 0;
+    padding: 10px 12px;
   }
 
   .figma-banner__content {
