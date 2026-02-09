@@ -13,9 +13,19 @@
       <span></span>
     </button>
 
-    {%- if section.settings.brand_text != blank -%}
-      <div class="logo">{{ section.settings.brand_text }}</div>
-    {%- endif -%}
+    <div class="logo" aria-label="Logo">
+      {%- if section.settings.logo_image != blank -%}
+        {{ section.settings.logo_image
+          | image_url: width: 400
+          | image_tag:
+            loading: 'lazy',
+            alt: section.settings.brand_text,
+            class: 'logo__image'
+        }}
+      {%- elsif section.settings.brand_text != blank -%}
+        <span class="logo__text">{{ section.settings.brand_text }}</span>
+      {%- endif -%}
+    </div>
 
     {%- if section.settings.tagline_text != blank -%}
       <div class="tagline">{{ section.settings.tagline_text }}</div>
@@ -73,6 +83,11 @@
 {
   "name": "Figma Banner",
   "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo image (navbar)"
+    },
     {
       "type": "text",
       "id": "brand_text",

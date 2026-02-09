@@ -37,6 +37,18 @@
   white-space: nowrap;
 }
 
+.figma-banner .logo__image {
+  display: block;
+  height: 26px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+}
+
+.figma-banner .logo__text {
+  display: inline-block;
+}
+
 .figma-banner .tagline {
   font-family: var(--tisso-font-sans);
   font-size: 16px;
@@ -106,6 +118,7 @@
   display: flex;
   justify-content: space-between;
   overflow: hidden;
+  background-color: #f5f5f5;
 }
 
 .figma-banner .text-container {
@@ -119,11 +132,12 @@
 
 .figma-banner .text-container h1 {
   font-family: var(--tisso-font-sans);
-  font-size: 70px;
+  font-size: clamp(44px, 5vw, 70px);
   font-weight: 500;
   line-height: 100%;
   color: #000000;
   margin: 0 0 30px;
+  white-space: nowrap;
 }
 
 .figma-banner .text-container p {
