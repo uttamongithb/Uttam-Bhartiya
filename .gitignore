@@ -1,0 +1,6 @@
+# Local-only sources (do not commit)
+tisso-vision/
+
+# OS
+.DS_Store
+Thumbs.db

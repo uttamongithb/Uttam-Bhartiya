@@ -1,0 +1,6 @@
+# Prevent Shopify CLI theme push from uploading local-only sources
+tisso-vision/
+
+# Common noise
+.DS_Store
+Thumbs.db

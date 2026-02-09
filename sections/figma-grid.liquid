@@ -7,28 +7,35 @@
 {% endcomment %}
 
 {{ 'figma-grid.css' | asset_url | stylesheet_tag }}
-{{ 'figma-grid.js' | asset_url | script_tag }}
+<script src="{{ 'figma-grid.js' | asset_url }}" defer></script>
 
-<section class="figma-grid" data-figma-grid data-bundle-handle="{{ section.settings.bundle_product_handle }}">
+<section
+  class="figma-grid in-the-wild"
+  data-figma-grid
+  data-section-id="{{ section.id }}"
+  data-bundle-handle="{{ section.settings.bundle_product_handle }}"
+>
   {%- if section.settings.title != blank -%}
-    <h2 class="figma-grid__title">{{ section.settings.title }}</h2>
+    <h2 class="section-title">{{ section.settings.title }}</h2>
   {%- endif -%}
 
-  <div class="figma-grid__items">
+  <div class="gallery-grid">
     {%- for block in section.blocks -%}
       {%- assign product = all_products[block.settings.product] -%}
       {%- if product != blank -%}
-        <button
-          class="figma-grid__card"
-          type="button"
+        <div
+          class="gallery-item"
+          role="button"
+          tabindex="0"
           data-product-handle="{{ product.handle }}"
-          aria-label="View {{ product.title }}"
+          aria-label="Quick view {{ product.title }}"
           {{ block.shopify_attributes }}
         >
           {%- if product.featured_image -%}
-            {{ product.featured_image | image_url: width: 400 | image_tag: loading: 'lazy', class: 'figma-grid__image', alt: product.title }}
+            {{ product.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: product.title }}
           {%- endif -%}
-        </button>
+          <button class="plus-btn" type="button" aria-label="Open quick view">+</button>
+        </div>
       {%- endif -%}
     {%- endfor -%}
   </div>
@@ -38,22 +45,52 @@
   Modal for product details and add-to-cart
   Rendered once for reuse across all products
 {%- endcomment -%}
-<div class="figma-modal" data-figma-modal aria-hidden="true" role="dialog" aria-modal="true">
-  <div class="figma-modal__overlay" data-figma-overlay></div>
-  <div class="figma-modal__dialog">
-    <button class="figma-modal__close" type="button" aria-label="Close" data-figma-close>×</button>
-    <div class="figma-modal__content">
-      <div class="figma-modal__media">
-        <img class="figma-modal__image" data-figma-image alt="" loading="lazy">
+<div class="modal-overlay" data-figma-modal data-section-id="{{ section.id }}" aria-hidden="true">
+  <div class="product-card" role="dialog" aria-modal="true" aria-label="Product quick view">
+    <button class="close-btn" type="button" aria-label="Close" data-figma-close>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+        <path d="M1 1L11 11M1 11L11 1" stroke="currentColor" stroke-width="1.5" />
+      </svg>
+    </button>
+
+    <div class="product-image">
+      <img src="" alt="" loading="lazy" width="155" height="190" data-figma-image>
+    </div>
+
+    <div class="product-info">
+      <h1 class="product-title" data-figma-title></h1>
+      <p class="product-price" data-figma-price></p>
+      <p class="product-description" data-figma-desc></p>
+
+      <div class="option-group" data-figma-color-group>
+        <label class="option-label">Color</label>
+        <div class="color-options">
+          <div class="color-grid" data-figma-color-grid></div>
+          <div class="color-labels" data-figma-color-labels></div>
+        </div>
       </div>
-      <div class="figma-modal__details">
-        <h3 class="figma-modal__title" data-figma-title></h3>
-        <div class="figma-modal__price" data-figma-price></div>
-        <div class="figma-modal__description" data-figma-desc></div>
-        <div class="figma-modal__options" data-figma-options></div>
-        <button class="figma-modal__add" type="button" data-figma-add>ADD TO CART</button>
-        <div class="figma-modal__status" role="status" aria-live="polite" data-figma-status></div>
+
+      <div class="option-group" data-figma-size-group>
+        <label class="option-label">Size</label>
+        <div class="size-selector">
+          <button class="size-dropdown" type="button" data-figma-size-dropdown>
+            <span class="dropdown-text" data-figma-size-text>Choose your size</span>
+            <svg class="dropdown-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M19 9L12 16L5 9" stroke="currentColor" stroke-width="2" />
+            </svg>
+          </button>
+          <div class="size-options" data-figma-size-options></div>
+        </div>
       </div>
+
+      <button class="add-to-cart-btn" type="button" data-figma-add>
+        <span>ADD TO CART</span>
+        <svg class="cart-arrow" width="24" height="12" viewBox="0 0 24 12" fill="none" aria-hidden="true" focusable="false">
+          <path d="M1 6H23M18 1L23 6L18 11" stroke="currentColor" stroke-width="1.5" />
+        </svg>
+      </button>
+
+      <div class="figma-status" role="status" aria-live="polite" data-figma-status></div>
     </div>
   </div>
 </div>

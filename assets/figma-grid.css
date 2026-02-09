@@ -275,3 +275,483 @@
     font-size: 18px;
   }
 }
+
+/* ================================
+   TISSO VISION (ported) overrides
+   ================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Lustria&display=swap');
+
+.figma-grid.in-the-wild {
+  padding: 60px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: #ffffff;
+}
+
+.figma-grid.in-the-wild .section-title {
+  font-family: 'Jost', sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  margin: 0 0 40px;
+  color: #000000;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.figma-grid.in-the-wild .gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.figma-grid.in-the-wild .gallery-item {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.figma-grid.in-the-wild .gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  display: block;
+}
+
+.figma-grid.in-the-wild .gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.figma-grid.in-the-wild .plus-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 2px solid #e0e0e0;
+  font-size: 18px;
+  font-weight: 300;
+  color: #000000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.figma-grid.in-the-wild .plus-btn:hover {
+  transform: scale(1.1);
+  background-color: #fff544;
+  border-color: #fff544;
+}
+
+/* Modal */
+.modal-overlay[data-figma-modal] {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.modal-overlay[data-figma-modal].active {
+  display: flex;
+}
+
+.modal-overlay[data-figma-modal] .product-card {
+  background: #ffffff;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  height: 600px;
+  overflow: hidden;
+}
+
+.modal-overlay[data-figma-modal] .close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  padding: 4px;
+}
+
+.modal-overlay[data-figma-modal] .close-btn:hover {
+  opacity: 0.7;
+}
+
+.modal-overlay[data-figma-modal] .product-image {
+  position: absolute;
+  top: 48px;
+  left: 22px;
+  width: 155px;
+  height: 190px;
+  overflow: hidden;
+}
+
+.modal-overlay[data-figma-modal] .product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  display: block;
+}
+
+.modal-overlay[data-figma-modal] .product-info {
+  position: absolute;
+  top: 52px;
+  right: 22px;
+  left: 186px;
+  bottom: 20px;
+}
+
+.modal-overlay[data-figma-modal] .product-title {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  color: #000;
+  line-height: 1.1;
+  letter-spacing: -0.16px;
+  margin: 0 0 8px;
+}
+
+.modal-overlay[data-figma-modal] .product-price {
+  font-family: 'Lustria', serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #000;
+  line-height: 1.2;
+  margin: 0 0 16px;
+}
+
+.modal-overlay[data-figma-modal] .product-description {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  color: #000;
+  line-height: 1.1;
+  letter-spacing: -0.12px;
+  margin: 0 0 32px;
+  width: 146px;
+}
+
+.modal-overlay[data-figma-modal] .option-group {
+  margin-bottom: 24px;
+}
+
+.modal-overlay[data-figma-modal] .option-label {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.3;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.modal-overlay[data-figma-modal] .color-grid {
+  display: flex;
+  gap: 1px;
+  margin-bottom: 12px;
+}
+
+.modal-overlay[data-figma-modal] .color-swatch {
+  width: 49px;
+  height: 40px;
+  border: 0.5px solid #000;
+  cursor: pointer;
+  position: relative;
+  background: none;
+  padding: 0;
+}
+
+.modal-overlay[data-figma-modal] .color-swatch .color-indicator {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: #ccc;
+}
+
+.modal-overlay[data-figma-modal] .color-swatch.active {
+  border-width: 2px;
+}
+
+.modal-overlay[data-figma-modal] .color-labels {
+  display: flex;
+  gap: 20px;
+}
+
+.modal-overlay[data-figma-modal] .color-label {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #000;
+  letter-spacing: -0.36px;
+  text-transform: capitalize;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.modal-overlay[data-figma-modal] .color-label.active {
+  opacity: 1;
+}
+
+.modal-overlay[data-figma-modal] .size-selector {
+  position: relative;
+}
+
+.modal-overlay[data-figma-modal] .size-dropdown {
+  width: 100%;
+  height: 40px;
+  border: 0.5px solid #000;
+  background: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #000;
+  letter-spacing: -0.32px;
+}
+
+.modal-overlay[data-figma-modal] .dropdown-arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.modal-overlay[data-figma-modal] .size-dropdown.open .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.modal-overlay[data-figma-modal] .size-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 0.5px solid #000;
+  border-top: none;
+  z-index: 5;
+  display: none;
+}
+
+.modal-overlay[data-figma-modal] .size-options.open {
+  display: block;
+}
+
+.modal-overlay[data-figma-modal] .size-option {
+  width: 100%;
+  height: 36px;
+  border: none;
+  background: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #000;
+  letter-spacing: -0.32px;
+  border-bottom: 0.5px solid #eee;
+}
+
+.modal-overlay[data-figma-modal] .size-option:hover {
+  background-color: #f5f5f5;
+}
+
+.modal-overlay[data-figma-modal] .size-option:last-child {
+  border-bottom: none;
+}
+
+.modal-overlay[data-figma-modal] .add-to-cart-btn {
+  position: absolute;
+  bottom: 34px;
+  left: 0;
+  right: 0;
+  height: 44px;
+  background-color: #000;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+}
+
+.modal-overlay[data-figma-modal] .add-to-cart-btn:hover:not(:disabled) {
+  background-color: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.modal-overlay[data-figma-modal] .add-to-cart-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.modal-overlay[data-figma-modal] .cart-arrow {
+  width: 20px;
+  height: 10px;
+  stroke: #ffffff;
+  transition: transform 0.2s ease;
+}
+
+.modal-overlay[data-figma-modal] .add-to-cart-btn:hover .cart-arrow {
+  transform: translateX(3px);
+}
+
+.modal-overlay[data-figma-modal] .figma-status {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #2d7a3b;
+  min-height: 18px;
+  font-family: 'Jost', sans-serif;
+}
+
+@media (max-width: 768px) {
+  .figma-grid.in-the-wild {
+    padding: 30px 15px;
+  }
+
+  .figma-grid.in-the-wild .section-title {
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  .figma-grid.in-the-wild .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .figma-grid.in-the-wild .gallery-item {
+    border-radius: 6px;
+  }
+
+  .figma-grid.in-the-wild .plus-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+    top: 10px;
+    right: 10px;
+  }
+
+  .modal-overlay[data-figma-modal] .product-card {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+
+  .modal-overlay[data-figma-modal] .product-image {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    height: 250px;
+    margin-top: 40px;
+  }
+
+  .modal-overlay[data-figma-modal] .product-info {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    padding: 20px;
+  }
+
+  .modal-overlay[data-figma-modal] .product-description {
+    width: 100%;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .modal-overlay[data-figma-modal] .option-group {
+    margin-bottom: 18px;
+  }
+
+  .modal-overlay[data-figma-modal] .color-swatch {
+    width: 45px;
+    height: 36px;
+  }
+
+  .modal-overlay[data-figma-modal] .color-label {
+    font-size: 12px;
+  }
+
+  .modal-overlay[data-figma-modal] .size-dropdown {
+    height: 44px;
+    font-size: 14px;
+  }
+
+  .modal-overlay[data-figma-modal] .add-to-cart-btn {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    margin-top: 20px;
+    height: 48px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .figma-grid.in-the-wild .gallery-grid {
+    gap: 8px;
+  }
+
+  .figma-grid.in-the-wild .plus-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    top: 8px;
+    right: 8px;
+  }
+
+  .modal-overlay[data-figma-modal] .product-image {
+    height: 200px;
+  }
+
+  .modal-overlay[data-figma-modal] .product-info {
+    padding: 15px;
+  }
+
+  .modal-overlay[data-figma-modal] .add-to-cart-btn {
+    height: 44px;
+  }
+}

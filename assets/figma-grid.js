@@ -1,237 +1,341 @@
+// @ts-nocheck
 /**
- * Figma Grid Modal and Cart Handler
- * Handles product selection, variant display, and add-to-cart with bundle logic
- * Vanilla JavaScript - no dependencies
+ * Figma Grid Modal and Cart Handler (ported to tisso-vision markup)
+ * - Opens quick view modal from gallery items
+ * - Renders Color swatches + Size dropdown (when those options exist)
+ * - Adds selected variant to cart via /cart/add.js
+ * - Bundle logic: when selected options contain Black + Medium, also add bundle product
  */
 (() => {
-  const grid = document.querySelector('[data-figma-grid]');
-  const modal = document.querySelector('[data-figma-modal]');
+  const colorMap = {
+    White: '#FFFFFF',
+    Black: '#000000',
+    Red: '#b20f36',
+    Grey: '#afafb7',
+    Gray: '#afafb7',
+    Blue: '#1e3a8a',
+    Green: '#166534'
+  };
 
-  if (!grid || !modal) return;
-
-  // Cache DOM elements
-  const overlay = modal.querySelector('[data-figma-overlay]');
-  const closeBtn = modal.querySelector('[data-figma-close]');
-  const addBtn = modal.querySelector('[data-figma-add]');
-  const titleEl = modal.querySelector('[data-figma-title]');
-  const priceEl = modal.querySelector('[data-figma-price]');
-  const descEl = modal.querySelector('[data-figma-desc]');
-  const imageEl = modal.querySelector('[data-figma-image]');
-  const optionsEl = modal.querySelector('[data-figma-options]');
-  const statusEl = modal.querySelector('[data-figma-status]');
-
-  // State
-  let currentProduct = null;
-  let selectedVariant = null;
-  let isAddingToCart = false;
-
-  const bundleHandle = grid.dataset.bundleHandle || 'soft-winter-jacket';
-
-  /**
-   * Format price using Shopify's native formatter or fallback
-   */
   const formatPrice = (cents) => {
-    if (window.Shopify?.formatMoney) {
-      return window.Shopify.formatMoney(cents);
-    }
+    if (window.Shopify?.formatMoney) return window.Shopify.formatMoney(cents);
     return `$${(cents / 100).toFixed(2)}`;
   };
 
-  /**
-   * Fetch product data from Shopify API
-   */
   const fetchProduct = async (handle) => {
-    try {
-      const response = await fetch(`/products/${handle}.js`);
-      if (!response.ok) throw new Error('Product fetch failed');
-      return await response.json();
-    } catch (error) {
-      console.error(`Failed to fetch product: ${handle}`, error);
-      throw error;
-    }
+    const response = await fetch(`/products/${handle}.js`);
+    if (!response.ok) throw new Error('Product fetch failed');
+    return response.json();
   };
 
-  /**
-   * Check if bundle conditions are met (Black + Medium)
-   */
-  const shouldAddBundle = () => {
-    if (!selectedVariant?.options) return false;
-    const hasBlack = selectedVariant.options.includes('Black');
-    const hasMedium = selectedVariant.options.includes('Medium');
+  const normalizeName = (name) => (name || '').toString().trim().toLowerCase();
+
+  const findOptionIndex = (product, matcher) => {
+    const idx = product.options.findIndex((opt) => matcher(normalizeName(opt.name)));
+    return idx >= 0 ? idx : null;
+  };
+
+  const getVariantByOptions = (product, selectedOptions) => {
+    return (
+      product.variants.find((variant) =>
+        variant.options.every((value, index) => value === selectedOptions[index])
+      ) || null
+    );
+  };
+
+  const shouldAddBundle = (variant) => {
+    if (!variant?.options) return false;
+    const hasBlack = variant.options.some((opt) => opt === 'Black');
+    const hasMedium = variant.options.some((opt) => opt === 'Medium');
     return hasBlack && hasMedium;
   };
 
-  /**
-   * Build variant selectors in modal
-   */
-  const renderVariantSelectors = (product) => {
-    optionsEl.innerHTML = '';
+  const initSection = (grid) => {
+    const sectionId = grid.dataset.sectionId;
+    const modal = document.querySelector(`[data-figma-modal][data-section-id="${sectionId}"]`);
+    if (!modal) return;
 
-    product.options.forEach((option, index) => {
-      const optionWrapper = document.createElement('div');
-      const label = document.createElement('label');
-      const select = document.createElement('select');
+    const closeBtn = modal.querySelector('[data-figma-close]');
+    const addBtn = modal.querySelector('[data-figma-add]');
+    const titleEl = modal.querySelector('[data-figma-title]');
+    const priceEl = modal.querySelector('[data-figma-price]');
+    const descEl = modal.querySelector('[data-figma-desc]');
+    const imageEl = modal.querySelector('[data-figma-image]');
+    const statusEl = modal.querySelector('[data-figma-status]');
 
-      label.textContent = option.name;
-      label.htmlFor = `figma-option-${index}`;
-      select.id = `figma-option-${index}`;
+    const colorGridEl = modal.querySelector('[data-figma-color-grid]');
+    const colorLabelsEl = modal.querySelector('[data-figma-color-labels]');
+    const colorGroupEl = modal.querySelector('[data-figma-color-group]');
 
-      option.values.forEach((value) => {
-        const optionEl = document.createElement('option');
-        optionEl.value = value;
-        optionEl.textContent = value;
-        select.appendChild(optionEl);
-      });
+    const sizeDropdownBtn = modal.querySelector('[data-figma-size-dropdown]');
+    const sizeTextEl = modal.querySelector('[data-figma-size-text]');
+    const sizeOptionsEl = modal.querySelector('[data-figma-size-options]');
+    const sizeGroupEl = modal.querySelector('[data-figma-size-group]');
 
-      // Update variant on selection change
-      select.addEventListener('change', () => updateSelectedVariant(product));
+    const bundleHandle = grid.dataset.bundleHandle || 'soft-winter-jacket';
 
-      optionWrapper.appendChild(label);
-      optionWrapper.appendChild(select);
-      optionsEl.appendChild(optionWrapper);
-    });
+    let currentProduct = null;
+    let selectedVariant = null;
+    let selectedOptions = [];
+    let isAddingToCart = false;
 
-    updateSelectedVariant(product);
-  };
+    const setStatus = (message, ok = true) => {
+      if (!statusEl) return;
+      statusEl.textContent = message;
+      statusEl.style.color = ok ? '' : '#b00020';
+    };
 
-  /**
-   * Update selected variant based on current select values
-   */
-  const updateSelectedVariant = (product) => {
-    const selects = Array.from(optionsEl.querySelectorAll('select'));
-    const selectedOptions = selects.map((select) => select.value);
-
-    selectedVariant = product.variants.find((variant) => {
-      return variant.options.every((optValue, idx) => optValue === selectedOptions[idx]);
-    });
-
-    if (!selectedVariant) return;
-
-    // Update price
-    priceEl.textContent = formatPrice(selectedVariant.price);
-
-    // Update button state based on availability
-    const isAvailable = selectedVariant.available;
-    addBtn.disabled = !isAvailable;
-    addBtn.textContent = isAvailable ? 'ADD TO CART' : 'SOLD OUT';
-  };
-
-  /**
-   * Open modal with product data
-   */
-  const openModal = async (productHandle) => {
-    try {
-      statusEl.textContent = '';
-      const product = await fetchProduct(productHandle);
-      currentProduct = product;
-
-      // Populate modal content
-      titleEl.textContent = product.title;
-      descEl.textContent = product.description || '';
-      imageEl.src = product.featured_image?.src || '';
-      imageEl.alt = product.title;
-
-      renderVariantSelectors(product);
-
-      // Show modal
-      modal.classList.add('is-active');
+    const openModal = () => {
+      modal.classList.add('active');
       modal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
+      closeBtn?.focus();
+    };
 
-      // Focus close button for accessibility
-      closeBtn.focus();
-    } catch (error) {
-      statusEl.textContent = 'Failed to load product. Please try again.';
-    }
-  };
+    const closeModal = () => {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      setStatus('');
+      if (sizeDropdownBtn) sizeDropdownBtn.classList.remove('open');
+      if (sizeOptionsEl) sizeOptionsEl.classList.remove('open');
+    };
 
-  /**
-   * Close modal
-   */
-  const closeModal = () => {
-    modal.classList.remove('is-active');
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    statusEl.textContent = '';
-  };
+    const updateSelectedVariantUI = () => {
+      if (!currentProduct) return;
+      selectedVariant = getVariantByOptions(currentProduct, selectedOptions);
 
-  /**
-   * Add product to cart with optional bundle
-   */
-  const addToCart = async () => {
-    if (!selectedVariant || isAddingToCart) return;
-
-    isAddingToCart = true;
-    addBtn.disabled = true;
-    statusEl.textContent = 'Adding to cart...';
-
-    const items = [
-      {
-        id: selectedVariant.id,
-        quantity: 1
+      if (!selectedVariant) {
+        if (addBtn) addBtn.disabled = true;
+        if (priceEl) priceEl.textContent = '';
+        return;
       }
-    ];
 
-    // Bundle logic: if Black + Medium, also add Soft Winter Jacket
-    if (shouldAddBundle()) {
-      try {
-        const bundleProduct = await fetchProduct(bundleHandle);
-        const bundleVariant = bundleProduct.variants.find((v) => v.available) || bundleProduct.variants[0];
+      if (priceEl) priceEl.textContent = formatPrice(selectedVariant.price);
+      const available = !!selectedVariant.available;
+      if (addBtn) addBtn.disabled = !available || isAddingToCart;
+    };
 
-        if (bundleVariant) {
-          items.push({
-            id: bundleVariant.id,
-            quantity: 1
-          });
-        }
-      } catch (error) {
-        // If bundle fails to load, continue with main product only
-        console.error('Bundle product not available', error);
+    const renderColor = (product, colorIndex) => {
+      if (!colorGridEl || !colorLabelsEl || !colorGroupEl) return;
+
+      const option = product.options[colorIndex];
+      const values = option?.values || [];
+
+      if (!values.length) {
+        colorGroupEl.style.display = 'none';
+        return;
       }
-    }
 
-    try {
-      const response = await fetch('/cart/add.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items })
+      colorGroupEl.style.display = '';
+      colorGridEl.innerHTML = '';
+      colorLabelsEl.innerHTML = '';
+
+      values.forEach((value, index) => {
+        const colorHex = colorMap[value] || '#cccccc';
+
+        const swatch = document.createElement('button');
+        swatch.type = 'button';
+        swatch.className = `color-swatch${index === 0 ? ' active' : ''}`;
+        swatch.setAttribute('data-value', value);
+        swatch.innerHTML = `<span class="color-indicator" style="background-color: ${colorHex};"></span>`;
+
+        swatch.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          selectedOptions[colorIndex] = value;
+          colorGridEl.querySelectorAll('.color-swatch').forEach((el) => el.classList.remove('active'));
+          colorLabelsEl.querySelectorAll('.color-label').forEach((el) => el.classList.remove('active'));
+          swatch.classList.add('active');
+          const label = colorLabelsEl.querySelector(`[data-value="${CSS.escape(value)}"]`);
+          if (label) label.classList.add('active');
+          updateSelectedVariantUI();
+        });
+
+        const label = document.createElement('span');
+        label.className = `color-label${index === 0 ? ' active' : ''}`;
+        label.textContent = value;
+        label.setAttribute('data-value', value);
+
+        colorGridEl.appendChild(swatch);
+        colorLabelsEl.appendChild(label);
       });
+    };
 
-      if (!response.ok) throw new Error('Cart add failed');
+    const renderSize = (product, sizeIndex) => {
+      if (!sizeOptionsEl || !sizeGroupEl || !sizeDropdownBtn || !sizeTextEl) return;
 
-      statusEl.textContent = '✓ Added to cart';
-      addBtn.textContent = 'ADD TO CART';
+      const option = product.options[sizeIndex];
+      const values = option?.values || [];
 
-      // Auto-close after 1.5s
-      setTimeout(() => closeModal(), 1500);
-    } catch (error) {
-      console.error('Add to cart error:', error);
-      statusEl.textContent = 'Failed to add. Please try again.';
-      addBtn.textContent = 'ADD TO CART';
-    } finally {
-      isAddingToCart = false;
-      addBtn.disabled = false;
-    }
+      if (!values.length) {
+        sizeGroupEl.style.display = 'none';
+        return;
+      }
+
+      sizeGroupEl.style.display = '';
+      sizeOptionsEl.innerHTML = '';
+      sizeTextEl.textContent = 'Choose your size';
+
+      values.forEach((value) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'size-option';
+        btn.textContent = value;
+        btn.setAttribute('data-value', value);
+
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          selectedOptions[sizeIndex] = value;
+          sizeTextEl.textContent = value;
+          sizeDropdownBtn.classList.remove('open');
+          sizeOptionsEl.classList.remove('open');
+          updateSelectedVariantUI();
+        });
+
+        sizeOptionsEl.appendChild(btn);
+      });
+    };
+
+    const setupOptionDefaults = (product) => {
+      selectedOptions = product.options.map((opt) => opt.values?.[0] || null);
+    };
+
+    const loadProductIntoModal = async (handle) => {
+      setStatus('');
+      try {
+        const product = await fetchProduct(handle);
+        currentProduct = product;
+
+        if (titleEl) titleEl.textContent = product.title;
+        if (descEl) descEl.innerHTML = product.description || '';
+        if (imageEl) {
+          imageEl.src = product.featured_image?.src || '';
+          imageEl.alt = product.title;
+        }
+
+        setupOptionDefaults(product);
+
+        const colorIndex = findOptionIndex(product, (n) => n.includes('color'));
+        const sizeIndex = findOptionIndex(product, (n) => n.includes('size'));
+
+        if (colorIndex === null && colorGroupEl) colorGroupEl.style.display = 'none';
+        if (sizeIndex === null && sizeGroupEl) sizeGroupEl.style.display = 'none';
+
+        if (colorIndex !== null) renderColor(product, colorIndex);
+        if (sizeIndex !== null) renderSize(product, sizeIndex);
+
+        updateSelectedVariantUI();
+        openModal();
+      } catch (error) {
+        console.error(`Failed to load product: ${handle}`, error);
+        setStatus('Failed to load product. Please try again.', false);
+      }
+    };
+
+    const addToCart = async () => {
+      if (!selectedVariant || isAddingToCart) return;
+
+      isAddingToCart = true;
+      if (addBtn) addBtn.disabled = true;
+      setStatus('Adding to cart...');
+
+      const items = [{ id: selectedVariant.id, quantity: 1 }];
+
+      if (shouldAddBundle(selectedVariant)) {
+        try {
+          const bundleProduct = await fetchProduct(bundleHandle);
+          const bundleVariant = bundleProduct.variants.find((v) => v.available) || bundleProduct.variants[0];
+          if (bundleVariant) items.push({ id: bundleVariant.id, quantity: 1 });
+        } catch (error) {
+          console.error('Bundle product not available', error);
+        }
+      }
+
+      try {
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items })
+        });
+        if (!response.ok) throw new Error('Cart add failed');
+
+        setStatus('✓ Added to cart', true);
+        setTimeout(() => closeModal(), 1200);
+      } catch (error) {
+        console.error('Add to cart error:', error);
+        setStatus('Failed to add. Please try again.', false);
+      } finally {
+        isAddingToCart = false;
+        updateSelectedVariantUI();
+      }
+    };
+
+    // Grid clicks
+    grid.addEventListener('click', (event) => {
+      const item = event.target.closest('.gallery-item[data-product-handle]');
+      if (!item) return;
+      const handle = item.dataset.productHandle;
+      if (handle) loadProductIntoModal(handle);
+    });
+
+    // Keyboard support
+    grid.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      const item = event.target.closest('.gallery-item[data-product-handle]');
+      if (!item) return;
+      event.preventDefault();
+      const handle = item.dataset.productHandle;
+      if (handle) loadProductIntoModal(handle);
+    });
+
+    // Modal controls
+    closeBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeModal();
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    addBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      addToCart();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal.classList.contains('active')) closeModal();
+    });
+
+    // Size dropdown
+    sizeDropdownBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const willOpen = !sizeDropdownBtn.classList.contains('open');
+      sizeDropdownBtn.classList.toggle('open', willOpen);
+      sizeOptionsEl?.classList.toggle('open', willOpen);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!modal.classList.contains('active')) return;
+      if (!sizeDropdownBtn || !sizeOptionsEl) return;
+      if (sizeDropdownBtn.contains(e.target) || sizeOptionsEl.contains(e.target)) return;
+      sizeDropdownBtn.classList.remove('open');
+      sizeOptionsEl.classList.remove('open');
+    });
   };
 
-  /**
-   * Event Listeners
-   */
-  // Grid card clicks
-  grid.addEventListener('click', (event) => {
-    const card = event.target.closest('[data-product-handle]');
-    if (card) openModal(card.dataset.productHandle);
-  });
+  const init = () => {
+    const grids = document.querySelectorAll('[data-figma-grid]');
+    if (!grids.length) return;
+    grids.forEach(initSection);
+  };
 
-  // Modal controls
-  overlay.addEventListener('click', closeModal);
-  closeBtn.addEventListener('click', closeModal);
-  addBtn.addEventListener('click', addToCart);
-
-  // Keyboard: Esc to close
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && modal.classList.contains('is-active')) {
-      closeModal();
-    }
-  });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();

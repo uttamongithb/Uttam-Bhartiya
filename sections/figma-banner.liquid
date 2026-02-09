@@ -6,56 +6,66 @@
 {{ 'figma-banner.css' | asset_url | stylesheet_tag }}
 
 <section class="figma-banner">
-  {%- if section.settings.brand_text != blank or section.settings.tagline_text != blank -%}
-    <div class="figma-banner__top">
-      {%- if section.settings.brand_text != blank -%}
-        <span class="figma-banner__brand">{{ section.settings.brand_text }}</span>
-      {%- endif -%}
-      {%- if section.settings.tagline_text != blank -%}
-        <span class="figma-banner__tagline">{{ section.settings.tagline_text }}</span>
-      {%- endif -%}
-      {%- if section.settings.top_button_label != blank -%}
-        <a class="figma-banner__top-btn" href="{{ section.settings.top_button_link }}">
-          {{- section.settings.top_button_label -}}
-        </a>
-      {%- endif -%}
+  <div class="heading" role="banner">
+    <button class="menu-icon" type="button" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    {%- if section.settings.brand_text != blank -%}
+      <div class="logo">{{ section.settings.brand_text }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.tagline_text != blank -%}
+      <div class="tagline">{{ section.settings.tagline_text }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.top_button_label != blank -%}
+      <a class="gift-button" href="{{ section.settings.top_button_link }}">
+        <span>{{ section.settings.top_button_label }}</span>
+        <svg width="24" height="12" viewBox="0 0 24 12" fill="none" aria-hidden="true" focusable="false">
+          <path d="M1 6H23M18 1L23 6L18 11" stroke="currentColor" stroke-width="1.5" />
+        </svg>
+      </a>
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.top_image != blank -%}
+    <div class="hero-banner">
+      {{ section.settings.top_image | image_url: width: 2000 | image_tag: loading: 'lazy', alt: section.settings.heading }}
     </div>
   {%- endif -%}
 
-  <div class="figma-banner__content">
-    {%- if section.settings.top_image != blank -%}
-      <div class="figma-banner__media figma-banner__media--top">
-        {{ section.settings.top_image | image_url: width: 1440 | image_tag: loading: 'lazy', class: 'figma-banner__image', alt: section.settings.heading }}
-      </div>
-    {%- endif -%}
-
-    <div class="figma-banner__bottom-section">
-      <div class="figma-banner__text">
-        {%- if section.settings.heading != blank -%}
-          <h1 class="figma-banner__heading">{{ section.settings.heading }}</h1>
-        {%- endif -%}
-        {%- if section.settings.description != blank -%}
-          <p class="figma-banner__description">{{ section.settings.description }}</p>
-        {%- endif -%}
-        {%- if section.settings.cta_label != blank -%}
-          <a class="figma-banner__cta" href="{{ section.settings.cta_link }}">
-            {{- section.settings.cta_label -}}
-          </a>
-        {%- endif -%}
-      </div>
-
-      {%- if section.settings.right_image != blank -%}
-        <div class="figma-banner__media figma-banner__media--right">
-          {{ section.settings.right_image | image_url: width: 890 | image_tag: loading: 'lazy', class: 'figma-banner__image', alt: section.settings.heading }}
-        </div>
+  <div class="gift-guide">
+    <div class="text-container">
+      {%- if section.settings.heading != blank -%}
+        <h1>{{ section.settings.heading }}</h1>
+      {%- endif -%}
+      {%- if section.settings.description != blank -%}
+        <p>{{ section.settings.description }}</p>
+      {%- endif -%}
+      {%- if section.settings.cta_label != blank -%}
+        <a class="shop-now-button" href="{{ section.settings.cta_link }}">
+          <span>{{ section.settings.cta_label }}</span>
+          <svg width="24" height="12" viewBox="0 0 24 12" fill="none" aria-hidden="true" focusable="false">
+            <path d="M1 6H23M18 1L23 6L18 11" stroke="currentColor" stroke-width="1.5" />
+          </svg>
+        </a>
       {%- endif -%}
     </div>
+
+    {%- if section.settings.right_image != blank -%}
+      <div class="img-cont">
+        {{ section.settings.right_image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: section.settings.heading }}
+      </div>
+    {%- endif -%}
   </div>
 
   {%- if section.settings.bottom_text != blank -%}
-    <div class="figma-banner__bottom-bar">
-      {{ section.settings.bottom_text }}
-    </div>
+    <section class="sustainability-banner" style="--tisso-bottom-bg: {{ section.settings.bottom_bar_bg }}; --tisso-bottom-color: {{ section.settings.bottom_bar_color }};">
+      <p>{{ section.settings.bottom_text }}</p>
+    </section>
   {%- endif -%}
 </section>
 
@@ -124,6 +134,18 @@
       "id": "bottom_text",
       "label": "Bottom announcement text",
       "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+    },
+    {
+      "type": "color",
+      "id": "bottom_bar_bg",
+      "label": "Bottom bar background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "bottom_bar_color",
+      "label": "Bottom bar text color",
+      "default": "#ffffff"
     }
   ],
   "presets": [
