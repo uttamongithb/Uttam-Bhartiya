@@ -12,6 +12,7 @@
     "figma_banner": {
       "type": "figma-banner",
       "settings": {
+        "logo_image": "shopify://shop_images/Group_1000007777.svg",
         "brand_text": "TISSO VISION",
         "tagline_text": "Find the ideal gift for your loved one.",
         "top_button_label": "CHOOSE GIFT",
@@ -22,7 +23,9 @@
         "cta_link": "",
         "top_image": "shopify://shop_images/Frame.png",
         "right_image": "shopify://shop_images/Frame_1.png",
-        "bottom_text": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+        "bottom_text": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL",
+        "bottom_bar_bg": "#000000",
+        "bottom_bar_color": "#ffffff"
       }
     },
     "figma_grid": {
