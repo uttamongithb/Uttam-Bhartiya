@@ -310,7 +310,8 @@
   }
 
   .figma-banner .img-cont {
-    display: block;
+    display: flex;
+    justify-content: center;
     width: 100%;
     margin-left: 0;
     height: auto;
@@ -322,6 +323,7 @@
   .figma-banner .img-cont img {
     width: 100%;
     height: auto;
+    margin: 0 auto;
   }
 
   .figma-banner .sustainability-banner {
