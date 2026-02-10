@@ -13,7 +13,7 @@
       "type": "figma-banner",
       "settings": {
         "logo_image": "shopify://shop_images/Group_1000007777.svg",
-        "brand_text": "TISSO VISION",
+        "brand_text": "TISSO VISON",
         "tagline_text": "Find the ideal gift for your loved one.",
         "top_button_label": "CHOOSE GIFT",
         "top_button_link": "",
@@ -77,7 +77,7 @@
         "product_6"
       ],
       "settings": {
-        "title": "Tisso vision in the wild",
+        "title": "Tisso vison in the wild",
         "bundle_product_handle": "soft-winter-jacket"
       }
     }
