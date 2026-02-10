@@ -379,10 +379,10 @@
   height: auto;
   max-height: 90vh;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  padding: 0;
+  display: grid;
+  grid-template-columns: 155px 1fr;
+  gap: 20px;
+  padding: 36px 27px 24px 20px;
   border-radius: 0;
 }
 
@@ -412,11 +412,12 @@
   position: relative;
   top: auto;
   left: auto;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 155 / 190;
+  width: 155px;
+  height: 190px;
+  aspect-ratio: auto;
   overflow: hidden;
   flex: 0 0 auto;
+  grid-row: span 2;
 }
 
 .modal-overlay[data-figma-modal] .product-image img {
@@ -435,7 +436,8 @@
   bottom: auto;
   display: flex;
   flex-direction: column;
-  padding: 20px 28px 28px;
+  padding: 0;
+  grid-column: 2;
 }
 
 .modal-overlay[data-figma-modal] .product-title {
