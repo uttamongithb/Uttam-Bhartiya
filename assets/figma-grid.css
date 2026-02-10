@@ -379,11 +379,24 @@
   height: auto;
   max-height: 90vh;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 36px 27px 24px 20px;
+  border-radius: 0;
+}
+
+.modal-overlay[data-figma-modal] .product-header-section {
   display: grid;
   grid-template-columns: 155px 1fr;
   gap: 20px;
-  padding: 36px 27px 24px 20px;
-  border-radius: 0;
+  margin-bottom: 24px;
+}
+
+.modal-overlay[data-figma-modal] .product-options-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 .modal-overlay[data-figma-modal] .close-btn {
@@ -472,7 +485,6 @@
 
 .modal-overlay[data-figma-modal] .option-group {
   margin-bottom: 16px;
-  grid-column: 1 / -1;
 }
 
 .modal-overlay[data-figma-modal] .option-label {
@@ -637,7 +649,6 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   transition: all 0.2s ease;
-  grid-column: 1 / -1;
 }
 
 .modal-overlay[data-figma-modal] .add-to-cart-btn:hover:not(:disabled) {
