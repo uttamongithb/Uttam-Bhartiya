@@ -495,7 +495,7 @@
 
 .modal-overlay[data-figma-modal] .color-swatch {
   width: 100%;
-  height: 44px;
+  height: 50px;
   border: 0;
   border-right: 1px solid #000;
   cursor: pointer;
