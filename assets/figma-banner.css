@@ -273,6 +273,8 @@
     height: auto;
     position: relative;
     background-color: #ffffff;
+    padding: 0;
+    margin: 0;
   }
 
   .figma-banner .text-container {
@@ -312,18 +314,22 @@
   .figma-banner .img-cont {
     display: flex;
     justify-content: center;
+    align-items: center;
     width: 100%;
-    margin-left: 0;
+    margin: 0;
+    padding: 0;
     height: auto;
     order: 2;
-    overflow: visible;
+    overflow: hidden;
     position: relative;
   }
 
   .figma-banner .img-cont img {
     width: 100%;
+    max-width: 100%;
     height: auto;
-    margin: 0 auto;
+    display: block;
+    margin: 0;
   }
 
   .figma-banner .sustainability-banner {
