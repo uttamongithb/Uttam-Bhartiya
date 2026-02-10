@@ -472,6 +472,7 @@
 
 .modal-overlay[data-figma-modal] .option-group {
   margin-bottom: 16px;
+  grid-column: 1 / -1;
 }
 
 .modal-overlay[data-figma-modal] .option-label {
