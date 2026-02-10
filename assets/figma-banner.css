@@ -278,7 +278,7 @@
   .figma-banner .text-container {
     width: 100%;
     max-width: 100%;
-    padding: 25px 30px;
+    padding: 25px 30px 15px 30px;
     height: auto;
     text-align: center;
     background-color: #ffffff;
@@ -293,15 +293,20 @@
   .figma-banner .text-container p {
     font-size: 13px;
     line-height: 1.5;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     color: #666;
   }
 
   .figma-banner .shop-now-button {
-    margin: 0 auto;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
     width: 160px;
     height: 42px;
     font-size: 13px;
+    z-index: 10;
   }
 
   .figma-banner .img-cont {
@@ -311,6 +316,7 @@
     height: auto;
     order: 2;
     overflow: visible;
+    position: relative;
   }
 
   .figma-banner .img-cont img {
