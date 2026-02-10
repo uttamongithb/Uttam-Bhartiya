@@ -133,32 +133,39 @@
 
       values.forEach((value, index) => {
         const colorHex = colorMap[value] || '#cccccc';
+        const getTextColor = (hex) => {
+          const clean = hex.replace('#', '');
+          const normalized = clean.length === 3
+            ? clean
+                .split('')
+                .map((c) => `${c}${c}`)
+                .join('')
+            : clean;
+          const r = parseInt(normalized.slice(0, 2), 16);
+          const g = parseInt(normalized.slice(2, 4), 16);
+          const b = parseInt(normalized.slice(4, 6), 16);
+          const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+          return luminance > 160 ? '#000000' : '#ffffff';
+        };
 
         const swatch = document.createElement('button');
         swatch.type = 'button';
         swatch.className = `color-swatch${index === 0 ? ' active' : ''}`;
         swatch.setAttribute('data-value', value);
-        swatch.innerHTML = `<span class="color-indicator" style="background-color: ${colorHex};"></span>`;
+        swatch.style.backgroundColor = colorHex;
+        swatch.style.color = getTextColor(colorHex);
+        swatch.textContent = value;
 
         swatch.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
           selectedOptions[colorIndex] = value;
           colorGridEl.querySelectorAll('.color-swatch').forEach((el) => el.classList.remove('active'));
-          colorLabelsEl.querySelectorAll('.color-label').forEach((el) => el.classList.remove('active'));
           swatch.classList.add('active');
-          const label = colorLabelsEl.querySelector(`[data-value="${CSS.escape(value)}"]`);
-          if (label) label.classList.add('active');
           updateSelectedVariantUI();
         });
 
-        const label = document.createElement('span');
-        label.className = `color-label${index === 0 ? ' active' : ''}`;
-        label.textContent = value;
-        label.setAttribute('data-value', value);
-
         colorGridEl.appendChild(swatch);
-        colorLabelsEl.appendChild(label);
       });
     };
 
@@ -211,7 +218,8 @@
         if (titleEl) titleEl.textContent = product.title;
         if (descEl) descEl.innerHTML = product.description || '';
         if (imageEl) {
-          imageEl.src = product.featured_image?.src || '';
+          const featuredImage = product.featured_image?.src || product.featured_image || product.images?.[0] || '';
+          imageEl.src = featuredImage;
           imageEl.alt = product.title;
         }
 
