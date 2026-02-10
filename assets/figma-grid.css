@@ -636,6 +636,7 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   transition: all 0.2s ease;
+  grid-column: 1 / -1;
 }
 
 .modal-overlay[data-figma-modal] .add-to-cart-btn:hover:not(:disabled) {
